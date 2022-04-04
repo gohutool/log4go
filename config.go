@@ -29,17 +29,6 @@ type xmlAppenderProperty struct {
 	Value string `xml:",chardata"`
 }
 
-type xmlRoot struct {
-	Level    string                `xml:"level"`
-	appender []xmlAppenderProperty `xml:"appender-ref"`
-}
-
-type xmlLogger struct {
-	Name     string                `xml:"name,attr"`
-	Level    string                `xml:"level"`
-	Appender []xmlAppenderProperty `xml:"appender-ref"`
-}
-
 type xmlAppender struct {
 	Enabled  string        `xml:"enabled,attr"`
 	Name     string        `xml:"name,attr"`
@@ -48,13 +37,28 @@ type xmlAppender struct {
 	Property []xmlProperty `xml:"property"`
 }
 
+type xmlAppenderRef struct {
+	Ref string `xml:"ref,attr"`
+}
+
+type xmlRoot struct {
+	Level    string           `xml:"level"`
+	Appender []xmlAppenderRef `xml:"appender-ref"`
+}
+
+type xmlLogger struct {
+	Name     string           `xml:"name,attr"`
+	Level    string           `xml:"level"`
+	Appender []xmlAppenderRef `xml:"appender-ref"`
+}
+
 type xmlLoggerConfig struct {
 	Appender []xmlAppender `xml:"appender"`
 	Root     xmlRoot       `xml:"root"`
 	Logger   []xmlLogger   `xml:"logger"`
 }
 
-func LoadConfiguration(filename string) xmlLoggerConfig {
+func loadConfigurationProperties(filename string) xmlLoggerConfig {
 	fd, err := os.Open(filename)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "LoadConfiguration: Error: Could not open %q for reading: %s\n", filename, err)

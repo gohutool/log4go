@@ -46,20 +46,20 @@
   <!-- 也就是说，你的这个日志也会在root的logger里面输出的，我这里配置false，就是不继承，各走各的。 -->
   <!-- appender-ref 也就是说这个logger的输出目的地是哪里，ref就是关联到上面声明的一个file，一个console -->
   <logger name="Sample">
-    <level value="info" />
+    <level>info</level>
     <appender-ref ref="StreamOperateFile" />
     <appender-ref ref="console" />
   </logger>
 
   <logger name="Demo">
-    <level value="info" />
+    <level>info</level>
     <appender-ref ref="StreamOperateFile" />
     <appender-ref ref="console" />
   </logger>
 
   <!-- 输出级别是info级别及以上的日志，下面的ref关联的两个appender没有filter设置，所以，info及以上的日志都是会输出到这2个appender的 -->
   <root>
-    <priority value="info" />
+    <level>info</level>
     <appender-ref ref="console" />
     <appender-ref ref="File" />
   </root>
