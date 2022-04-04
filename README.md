@@ -1,16 +1,16 @@
 # log4go
 a logkit like as log4j with go language
 
-# This is an unmaintained fork, left only so it doesn't break imports.
+# Introduce
+This project is come from an unmaintained fork, the branch can see http://log4go.googlecode.com
 
-Please see http://log4go.googlecode.com/
+- left only so it doesn't break imports.
+- some enhancement if to need 
 
-Installation:
-- Run `goinstall log4go.googlecode.com/hg`
 
 Usage:
 - Add the following import:
-import l4g "log4go.googlecode.com/hg"
+import l4g "github.com/gohutool/log4go"
 
 Acknowledgements:
 - pomack
