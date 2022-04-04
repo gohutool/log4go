@@ -19,5 +19,5 @@ import (
 
 func TestConfiguration(t *testing.T) {
 	xc := LoadConfiguration("./examples/example.xml")
-	fmt.Println(xc)
+	fmt.Printf("%+v", xc)
 }
