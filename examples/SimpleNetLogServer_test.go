@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net"
 	"os"
+	"testing"
 )
 
 var (
@@ -18,7 +19,7 @@ func e(err error) {
 	}
 }
 
-func main() {
+func TestUDPNetLog(m *testing.T) {
 	flag.Parse()
 
 	// Bind to the port

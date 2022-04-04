@@ -6,6 +6,7 @@ import (
 	"io"
 	"log4go"
 	"os"
+	"testing"
 	"time"
 )
 
@@ -13,7 +14,7 @@ const (
 	filename = "flw.log"
 )
 
-func main() {
+func TestFileLogWriter(t *testing.T) {
 	// Get a new logger instance
 	log := log4go.NewLogger()
 

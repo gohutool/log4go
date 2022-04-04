@@ -2,10 +2,11 @@ package main
 
 import (
 	"log4go"
+	"testing"
 	"time"
 )
 
-func main() {
+func TestConsoleLogWriter(t *testing.T) {
 	log := log4go.NewLogger()
 	defer log.Close()
 	log.AddFilter("stdout", log4go.DEBUG, log4go.NewConsoleLogWriter())

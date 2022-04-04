@@ -1,8 +1,11 @@
 package main
 
-import "log4go"
+import (
+	"log4go"
+	"testing"
+)
 
-func main() {
+func TestXMLConfiguration(t *testing.T) {
 	// Load the configuration (isn't this easy?)
 	log4go.LoadConfiguration("example.xml")
 

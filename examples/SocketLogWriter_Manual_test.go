@@ -2,10 +2,11 @@ package main
 
 import (
 	"log4go"
+	"testing"
 	"time"
 )
 
-func main() {
+func TestSocket(t *testing.T) {
 	log := log4go.NewLogger()
 	log.AddFilter("network", log4go.FINEST, log4go.NewSocketLogWriter("udp", "192.168.1.255:12124"))
 
