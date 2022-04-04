@@ -186,6 +186,7 @@ func Trace(arg0 interface{}, args ...interface{}) {
 // Utility for info log messages (see Debug() for parameter explanation)
 // Wrapper for (*Logger).Info
 func Info(arg0 interface{}, args ...interface{}) {
+
 	const (
 		lvl = INFO
 	)
