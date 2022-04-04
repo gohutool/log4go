@@ -40,7 +40,6 @@
     <property name="endpoint">192.168.1.255:12124</property> <!-- recommend UDP broadcast -->
     <property name="protocol">udp</property> <!-- tcp or udp -->
   </appender>
-
   <!-- 这个就是自定义的一个logger -->
   <!-- 输出级别是info级别及以上的日志，不要怕，StreamOperateFile已经过滤，只输出info级别的日志 -->
   <!-- additivity 这个默认是true，即继承父类 root logger -->
