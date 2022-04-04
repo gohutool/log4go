@@ -4,11 +4,10 @@ import (
 	"bufio"
 	"fmt"
 	"io"
+	"log4go"
 	"os"
 	"time"
 )
-
-import l4g "code.google.com/p/log4go"
 
 const (
 	filename = "flw.log"
@@ -16,20 +15,20 @@ const (
 
 func main() {
 	// Get a new logger instance
-	log := l4g.NewLogger()
+	log := log4go.NewLogger()
 
 	// Create a default logger that is logging messages of FINE or higher
-	log.AddFilter("file", l4g.FINE, l4g.NewFileLogWriter(filename, false))
+	log.AddFilter("file", log4go.FINE, log4go.NewFileLogWriter(filename, false))
 	log.Close()
 
 	/* Can also specify manually via the following: (these are the defaults) */
-	flw := l4g.NewFileLogWriter(filename, false)
+	flw := log4go.NewFileLogWriter(filename, false)
 	flw.SetFormat("[%D %T] [%L] (%S) %M")
 	flw.SetRotate(false)
 	flw.SetRotateSize(0)
 	flw.SetRotateLines(0)
 	flw.SetRotateDaily(false)
-	log.AddFilter("file", l4g.FINE, flw)
+	log.AddFilter("file", log4go.FINE, flw)
 
 	// Log some experimental messages
 	log.Finest("Everything is created now (notice that I will not be printing to the file)")

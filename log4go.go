@@ -55,6 +55,7 @@ import (
 )
 
 // Version information
+
 const (
 	L4G_VERSION = "log4go-v3.0.1"
 	L4G_MAJOR   = 3
@@ -65,6 +66,7 @@ const (
 /****** Constants ******/
 
 // These are the integer logging levels used by the logger
+
 type Level int
 
 const (
@@ -79,6 +81,7 @@ const (
 )
 
 // Logging level strings
+
 var (
 	levelStrings = [...]string{"FNST", "FINE", "DEBG", "TRAC", "INFO", "WARN", "EROR", "CRIT"}
 )
@@ -108,8 +111,8 @@ type LogRecord struct {
 }
 
 /****** LogWriter ******/
-
 // This is an interface for anything that should be able to write logs
+
 type LogWriter interface {
 	// This will be called to log a LogRecord message.
 	LogWrite(rec *LogRecord)
@@ -225,6 +228,7 @@ func (log Logger) intLogf(lvl Level, format string, args ...interface{}) {
 }
 
 // Send a closure log message internally
+
 func (log Logger) intLogc(lvl Level, closure func() string) {
 	skip := true
 
@@ -264,6 +268,7 @@ func (log Logger) intLogc(lvl Level, closure func() string) {
 }
 
 // Send a log message with manual level, source, and message.
+
 func (log Logger) Log(lvl Level, source, message string) {
 	skip := true
 
@@ -297,18 +302,21 @@ func (log Logger) Log(lvl Level, source, message string) {
 
 // Logf logs a formatted log message at the given log level, using the caller as
 // its source.
+
 func (log Logger) Logf(lvl Level, format string, args ...interface{}) {
 	log.intLogf(lvl, format, args...)
 }
 
 // Logc logs a string returned by the closure at the given log level, using the caller as
 // its source.  If no log message would be written, the closure is never called.
+
 func (log Logger) Logc(lvl Level, closure func() string) {
 	log.intLogc(lvl, closure)
 }
 
 // Finest logs a message at the finest log level.
 // See Debug for an explanation of the arguments.
+
 func (log Logger) Finest(arg0 interface{}, args ...interface{}) {
 	const (
 		lvl = FINEST
@@ -328,6 +336,7 @@ func (log Logger) Finest(arg0 interface{}, args ...interface{}) {
 
 // Fine logs a message at the fine log level.
 // See Debug for an explanation of the arguments.
+
 func (log Logger) Fine(arg0 interface{}, args ...interface{}) {
 	const (
 		lvl = FINE
@@ -357,6 +366,7 @@ func (log Logger) Fine(arg0 interface{}, args ...interface{}) {
 // - arg0 is interface{}
 //   When given anything else, the log message will be each of the arguments
 //   formatted with %v and separated by spaces (ala Sprint).
+
 func (log Logger) Debug(arg0 interface{}, args ...interface{}) {
 	const (
 		lvl = DEBUG
@@ -376,6 +386,7 @@ func (log Logger) Debug(arg0 interface{}, args ...interface{}) {
 
 // Trace logs a message at the trace log level.
 // See Debug for an explanation of the arguments.
+
 func (log Logger) Trace(arg0 interface{}, args ...interface{}) {
 	const (
 		lvl = TRACE
@@ -395,6 +406,7 @@ func (log Logger) Trace(arg0 interface{}, args ...interface{}) {
 
 // Info logs a message at the info log level.
 // See Debug for an explanation of the arguments.
+
 func (log Logger) Info(arg0 interface{}, args ...interface{}) {
 	const (
 		lvl = INFO
@@ -417,6 +429,7 @@ func (log Logger) Info(arg0 interface{}, args ...interface{}) {
 // message is not actually logged, because all formats are processed and all
 // closures are executed to format the error message.
 // See Debug for further explanation of the arguments.
+
 func (log Logger) Warn(arg0 interface{}, args ...interface{}) error {
 	const (
 		lvl = WARNING
@@ -440,6 +453,7 @@ func (log Logger) Warn(arg0 interface{}, args ...interface{}) error {
 // Error logs a message at the error log level and returns the formatted error,
 // See Warn for an explanation of the performance and Debug for an explanation
 // of the parameters.
+
 func (log Logger) Error(arg0 interface{}, args ...interface{}) error {
 	const (
 		lvl = ERROR

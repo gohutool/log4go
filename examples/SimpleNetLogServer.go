@@ -22,7 +22,7 @@ func main() {
 	flag.Parse()
 
 	// Bind to the port
-	bind, err := net.ResolveUDPAddr("0.0.0.0:" + *port)
+	bind, err := net.ResolveUDPAddr("udp", "0.0.0.0:"+*port)
 	e(err)
 
 	// Create listener

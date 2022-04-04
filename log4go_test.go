@@ -94,7 +94,7 @@ var logRecordWriteTests = []struct {
 }
 
 func TestConsoleLogWriter(t *testing.T) {
-	console := make(ConsoleLogWriter)
+	console := new(ConsoleLogWriter)
 
 	r, w := io.Pipe()
 	go console.run(w)
@@ -324,17 +324,17 @@ func TestXMLConfig(t *testing.T) {
 	fmt.Fprintln(fd, "    <level>FINEST</level>")
 	fmt.Fprintln(fd, "    <property name=\"filename\">test.log</property>")
 	fmt.Fprintln(fd, "    <!--")
-	fmt.Fprintln(fd, "       %T - Time (15:04:05 MST)")
-	fmt.Fprintln(fd, "       %t - Time (15:04)")
-	fmt.Fprintln(fd, "       %D - Date (2006/01/02)")
-	fmt.Fprintln(fd, "       %d - Date (01/02/06)")
-	fmt.Fprintln(fd, "       %L - Level (FNST, FINE, DEBG, TRAC, WARN, EROR, CRIT)")
-	fmt.Fprintln(fd, "       %S - Source")
-	fmt.Fprintln(fd, "       %M - Message")
+	fmt.Fprintln(fd, "       T - Time (15:04:05 MST)")
+	fmt.Fprintln(fd, "       t - Time (15:04)")
+	fmt.Fprintln(fd, "       D - Date (2006/01/02)")
+	fmt.Fprintln(fd, "       d - Date (01/02/06)")
+	fmt.Fprintln(fd, "       L - Level (FNST, FINE, DEBG, TRAC, WARN, EROR, CRIT)")
+	fmt.Fprintln(fd, "       S - Source")
+	fmt.Fprintln(fd, "       M - Message")
 	fmt.Fprintln(fd, "       It ignores unknown format strings (and removes them)")
-	fmt.Fprintln(fd, "       Recommended: \"[%D %T] [%L] (%S) %M\"")
+	fmt.Fprintln(fd, "       Recommended: \"[D T] [L] (S) M\"")
 	fmt.Fprintln(fd, "    -->")
-	fmt.Fprintln(fd, "    <property name=\"format\">[%D %T] [%L] (%S) %M</property>")
+	fmt.Fprintln(fd, "    <property name=\"format\">[D T] [L] (S) M</property>")
 	fmt.Fprintln(fd, "    <property name=\"rotate\">false</property> <!-- true enables log rotation, otherwise append -->")
 	fmt.Fprintln(fd, "    <property name=\"maxsize\">0M</property> <!-- \\d+[KMG]? Suffixes are in terms of 2**10 -->")
 	fmt.Fprintln(fd, "    <property name=\"maxlines\">0K</property> <!-- \\d+[KMG]? Suffixes are in terms of thousands -->")
@@ -383,7 +383,7 @@ func TestXMLConfig(t *testing.T) {
 	}
 
 	// Make sure they're the right type
-	if _, ok := log["stdout"].LogWriter.(ConsoleLogWriter); !ok {
+	if _, ok := log["stdout"].LogWriter.(*ConsoleLogWriter); !ok {
 		t.Fatalf("XMLConfig: Expected stdout to be ConsoleLogWriter, found %T", log["stdout"].LogWriter)
 	}
 	if _, ok := log["file"].LogWriter.(*FileLogWriter); !ok {

@@ -1,5 +1,7 @@
 package main
 
+import "log4go"
+
 func main() {
 	// Load the configuration (isn't this easy?)
 	log4go.LoadConfiguration("example.xml")
