@@ -18,6 +18,6 @@ import (
 */
 
 func TestConfiguration(t *testing.T) {
-	xc := LoadConfiguration("./examples/example.xml")
+	xc := LoadXMLConfigurationProperties("./examples/example.xml")
 	fmt.Printf("%+v", xc)
 }

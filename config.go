@@ -58,7 +58,7 @@ type xmlLoggerConfig struct {
 	Logger   []xmlLogger   `xml:"logger"`
 }
 
-func loadConfigurationProperties(filename string) xmlLoggerConfig {
+func LoadXMLConfigurationProperties(filename string) xmlLoggerConfig {
 	fd, err := os.Open(filename)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "LoadConfiguration: Error: Could not open %q for reading: %s\n", filename, err)
