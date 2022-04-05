@@ -195,7 +195,11 @@ func (lm loggerManager) GetLogger(name string) *Logger {
 	return nil
 }
 
-func (lm loggerManager) initWithConfig(configuration LoggerConfiguration) error {
+func (lm loggerManager) InitWithDefaultConfig() error {
+	return lm.InitWithConfig(LoggerConfiguration{})
+}
+
+func (lm loggerManager) InitWithConfig(configuration LoggerConfiguration) error {
 	lm.laf = LoggerAppenderFactory.new()
 	lm.loggerMap = make(map[string]LoggerAppenderReference)
 	lm.rootLogger = LoggerAppenderReference{}
@@ -203,7 +207,10 @@ func (lm loggerManager) initWithConfig(configuration LoggerConfiguration) error 
 	if configuration.Appender != nil && len(configuration.Appender) > 0 {
 		// init all of appender at first
 		for _, appender := range configuration.Appender {
-			lm.laf.registerLoggerAppender(appender.Name, appender.Type, appender.Pattern, appender.Property)
+			_, _, e := lm.laf.registerLoggerAppender(appender.Name, appender.Type, appender.Pattern, appender.Property)
+			if e != nil {
+				panic(fmt.Sprintf("Add Appender[%v] %v", appender.Name, e.Error()))
+			}
 		}
 	}
 
@@ -254,7 +261,7 @@ func (lm loggerManager) initWithConfig(configuration LoggerConfiguration) error 
 	return nil
 }
 
-func (lm loggerManager) initWithXML(xmlFile string) error {
+func (lm loggerManager) InitWithXML(xmlFile string) error {
 	lc := LoadXMLConfigurationProperties(xmlFile)
-	return lm.initWithConfig(lc)
+	return lm.InitWithConfig(lc)
 }

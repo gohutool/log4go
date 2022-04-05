@@ -26,7 +26,7 @@
     <property name="daily">true</property> <!-- Automatically rotates when a log message is written after midnight -->
   </appender>
   <appender enabled="true" name="testfile">
-    <type>xml</type>
+    <type>file</type>
     <pattern>[%D %T] [%L] (%S) %M</pattern>
     <property name="filename">trace.xml</property>
     <property name="rotate">false</property> <!-- true enables log rotation, otherwise append -->
@@ -34,7 +34,7 @@
     <property name="maxrecords">6K</property> <!-- \d+[KMG]? Suffixes are in terms of thousands -->
     <property name="daily">false</property> <!-- Automatically rotates when a log message is written after midnight -->
   </appender>
-  <appender enabled="false"><!-- enabled=false means this logger won't actually be created -->
+  <appender enabled="false" name="logstash"><!-- enabled=false means this logger won't actually be created -->
     <type>socket</type>
     <pattern>[%D %T] [%L] (%S) %M</pattern>
     <property name="endpoint">192.168.1.255:12124</property> <!-- recommend UDP broadcast -->
@@ -47,21 +47,21 @@
   <!-- appender-ref 也就是说这个logger的输出目的地是哪里，ref就是关联到上面声明的一个file，一个console -->
   <logger name="Sample">
     <level>info</level>
-    <appender-ref ref="StreamOperateFile" />
+    <appender-ref ref="file" />
     <appender-ref ref="console" />
   </logger>
 
   <logger name="Demo">
     <level>info</level>
-    <appender-ref ref="StreamOperateFile" />
+    <appender-ref ref="file" />
     <appender-ref ref="console" />
   </logger>
 
   <!-- 输出级别是info级别及以上的日志，下面的ref关联的两个appender没有filter设置，所以，info及以上的日志都是会输出到这2个appender的 -->
   <root>
     <level>info</level>
-    <appender-ref ref="console" />
-    <appender-ref ref="File" />
+    <appender-ref ref="testfile" />
+    <appender-ref ref="logstash" />
   </root>
 
 </configuration>

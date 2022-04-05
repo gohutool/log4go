@@ -122,6 +122,7 @@ func (laf *loggerAppenderFactory) DefaultLoggerAppender() (LoggerAppender, error
 }
 
 func (laf *loggerAppenderFactory) getAppenderRefByName(name string) (LoggerAppender, error) {
+	name = strings.ToLower(name)
 	if laf.appender == nil {
 		return nil, errors.New("LoggerAppenderFactory is not init")
 	}
@@ -138,6 +139,8 @@ func (laf *loggerAppenderFactory) registerLoggerAppender(name, typename, pattern
 	laf.typeLock.RLock()
 	defer laf.typeLock.RUnlock()
 
+	name = strings.ToLower(name)
+
 	if laf.appender == nil {
 		laf.appender = make(map[string]LoggerAppender)
 	}
@@ -149,7 +152,7 @@ func (laf *loggerAppenderFactory) registerLoggerAppender(name, typename, pattern
 	itf, err := laf.getInterfaceByType(typename)
 
 	if err != nil {
-		return laf, nil, err
+		panic("LoggerAppender type '" + typename + "' is not registry.")
 	}
 
 	if _, ok := laf.appender[name]; ok {

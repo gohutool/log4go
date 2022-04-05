@@ -28,3 +28,8 @@ func TestLoggerAppenderFactoryGetType(t *testing.T) {
 	LoggerAppenderFactory.registerLoggerAppender("default", "console", "", nil)
 	LoggerAppenderFactory.registerLoggerAppender("default", "console", "", nil)
 }
+
+func TestLoadXMLConfiguration(t *testing.T) {
+	xc := LoggerManager.InitWithXML("./examples/example.xml")
+	fmt.Printf("%+v", xc)
+}
