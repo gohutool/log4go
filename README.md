@@ -7,7 +7,6 @@ This project is come from an unmaintained fork, the branch can see http://log4go
 - left only so it doesn't break imports.
 - some enhancement if to need 
 
-
 Usage:
 - Add the following import:
 import l4g "github.com/gohutool/log4go"
