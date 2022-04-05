@@ -21,3 +21,7 @@ func TestConfiguration(t *testing.T) {
 	xc := LoadXMLConfigurationProperties("./examples/example.xml")
 	fmt.Printf("%+v", xc)
 }
+
+func TestLoggerAppenderFactoryGetType(t *testing.T) {
+	fmt.Println(LoggerAppenderFactory.getInterfaceByType("Console"))
+}

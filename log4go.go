@@ -45,7 +45,7 @@ func (l Level) String() string {
 	return levelStrings[int(l)]
 }
 
-// A LogRecord contains all of the pertinent information for each message
+// A LogRecord contains all the pertinent information for each message
 type LogRecord struct {
 	Level   Level     // The log level
 	Created time.Time // The time at which the log message was created (nanoseconds)
@@ -53,18 +53,37 @@ type LogRecord struct {
 	Message string    // The log message
 }
 
-/****** LogWriter ******/
-// This is an interface for anything that should be able to write logs
+type Logger struct {
+}
 
-type LogAppender interface {
-	init(property []xmlProperty)
+func (c Logger) Critical(arg0 interface{}, args ...interface{}) error {
+	return nil
+}
 
-	start()
+func (c Logger) Error(arg0 interface{}, args ...interface{}) error {
+	return nil
+}
 
-	// This will be called to log a LogRecord message.
-	LogWrite(rec *LogRecord)
+func (c Logger) Warning(arg0 interface{}, args ...interface{}) error {
+	return nil
+}
 
-	// This should clean up anything lingering about the LogWriter, as it is called before
-	// the LogWriter is removed.  LogWrite should not be called after Close.
-	Close()
+func (c Logger) Info(arg0 interface{}, args ...interface{}) error {
+	return nil
+}
+
+func (c Logger) Trace(arg0 interface{}, args ...interface{}) error {
+	return nil
+}
+
+func (c Logger) Debug(arg0 interface{}, args ...interface{}) error {
+	return nil
+}
+
+func (c Logger) Fine(arg0 interface{}, args ...interface{}) error {
+	return nil
+}
+
+func (c Logger) Finest(arg0 interface{}, args ...interface{}) error {
+	return nil
 }

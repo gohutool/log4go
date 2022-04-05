@@ -19,46 +19,46 @@ import (
 * 修改历史 : 1. [2022/4/4 22:08] 创建文件 by NST
 */
 
-type xmlProperty struct {
+type Property struct {
 	Name  string `xml:"name,attr"`
 	Value string `xml:",chardata"`
 }
 
-type xmlAppenderProperty struct {
+type AppenderProperty struct {
 	Name  string `xml:"name,attr"`
 	Value string `xml:",chardata"`
 }
 
-type xmlAppender struct {
-	Enabled  string        `xml:"enabled,attr"`
-	Name     string        `xml:"name,attr"`
-	Type     string        `xml:"type"`
-	Pattern  string        `xml:"pattern"`
-	Property []xmlProperty `xml:"property"`
+type AppenderConfig struct {
+	Enabled  string     `xml:"enabled,attr"`
+	Name     string     `xml:"name,attr"`
+	Type     string     `xml:"type"`
+	Pattern  string     `xml:"pattern"`
+	Property []Property `xml:"property"`
 }
 
-type xmlAppenderRef struct {
+type AppenderRef struct {
 	Ref string `xml:"ref,attr"`
 }
 
-type xmlRoot struct {
-	Level    string           `xml:"level"`
-	Appender []xmlAppenderRef `xml:"appender-ref"`
+type RootLoggerConfig struct {
+	Level    string        `xml:"level"`
+	Appender []AppenderRef `xml:"appender-ref"`
 }
 
-type xmlLogger struct {
-	Name     string           `xml:"name,attr"`
-	Level    string           `xml:"level"`
-	Appender []xmlAppenderRef `xml:"appender-ref"`
+type LoggerConfig struct {
+	Name     string        `xml:"name,attr"`
+	Level    string        `xml:"level"`
+	Appender []AppenderRef `xml:"appender-ref"`
 }
 
-type xmlLoggerConfig struct {
-	Appender []xmlAppender `xml:"appender"`
-	Root     xmlRoot       `xml:"root"`
-	Logger   []xmlLogger   `xml:"logger"`
+type LoggerConfiguration struct {
+	Appender []AppenderConfig `xml:"appender"`
+	Root     RootLoggerConfig `xml:"root"`
+	Logger   []LoggerConfig   `xml:"logger"`
 }
 
-func LoadXMLConfigurationProperties(filename string) xmlLoggerConfig {
+func LoadXMLConfigurationProperties(filename string) LoggerConfiguration {
 	fd, err := os.Open(filename)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "LoadConfiguration: Error: Could not open %q for reading: %s\n", filename, err)
@@ -70,7 +70,7 @@ func LoadXMLConfigurationProperties(filename string) xmlLoggerConfig {
 		os.Exit(1)
 	}
 
-	xc := new(xmlLoggerConfig)
+	xc := new(LoggerConfiguration)
 	if err := xml.Unmarshal(contents, xc); err != nil {
 		msg := fmt.Sprintf("LoadConfiguration: Error: Could not parse XML configuration in %q: %s\n", filename, err)
 		fmt.Fprintln(os.Stderr, msg)
