@@ -75,7 +75,8 @@ import l4g "github.com/gohutool/log4go"
     <appender-ref ref="file" />
   </logger>
 
-  <!-- 输出级别是info级别及以上的日志，下面的ref关联的两个appender没有filter设置，所以，info及以上的日志都是会输出到这2个appender的 -->
+  <!-- 输出级别是info级别及以上的日志，下面的ref关联的两个appender没有filter设置，
+  所以，info及以上的日志都是会输出到这2个appender的 -->
   <root>
     <level>info</level>
     <appender-ref ref="testfile" />
