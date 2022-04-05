@@ -59,6 +59,8 @@ func TestLogger(t *testing.T) {
 	log4go.LoggerManager.InitWithDefaultConfig()
 	logger.Info("hello")
 	logger.Info("hello")
+	time.Sleep(1 * time.Second)
+	logger.Error("hello")
 
 	time.Sleep(10 * time.Second)
 }

@@ -42,38 +42,38 @@ type Logger struct {
 }
 
 func (c Logger) Critical(arg0 any, args ...any) error {
-	return c.Log(CRITICAL, arg0, args...)
+	return c.log(CRITICAL, arg0, args...)
 }
 
 func (c Logger) Error(arg0 any, args ...any) error {
-	return c.Log(ERROR, arg0, args...)
+	return c.log(ERROR, arg0, args...)
 }
 
 func (c Logger) Warning(arg0 any, args ...any) error {
-	return c.Log(WARNING, arg0, args...)
+	return c.log(WARNING, arg0, args...)
 }
 
 func (c Logger) Info(arg0 any, args ...any) error {
-	return c.Log(INFO, arg0, args...)
+	return c.log(INFO, arg0, args...)
 }
 
 func (c Logger) Trace(arg0 any, args ...any) error {
-	return c.Log(TRACE, arg0, args...)
+	return c.log(TRACE, arg0, args...)
 }
 
 func (c Logger) Debug(arg0 any, args ...any) error {
-	return c.Log(DEBUG, arg0, args...)
+	return c.log(DEBUG, arg0, args...)
 }
 
 func (c Logger) Fine(arg0 any, args ...any) error {
-	return c.Log(FINE, arg0, args...)
+	return c.log(FINE, arg0, args...)
 }
 
 func (c Logger) Finest(arg0 any, args ...any) error {
-	return c.Log(FINEST, arg0, args...)
+	return c.log(FINEST, arg0, args...)
 }
 
-func (c Logger) Log(level Level, arg0 any, args ...any) error {
+func (c Logger) log(level Level, arg0 any, args ...any) error {
 
 	var msg string
 	switch first := arg0.(type) {
@@ -81,7 +81,7 @@ func (c Logger) Log(level Level, arg0 any, args ...any) error {
 		// Use the string as a format string
 		msg = BuildString(first, args...)
 	case func(...any) string:
-		// Log the closure (no other arguments used)
+		// loglog the closure (no other arguments used)
 		msg = first(args...)
 	default:
 		// Build a format string so that it will be similar to Sprint
