@@ -34,7 +34,7 @@ var LoggerAppenderFactory = &loggerAppenderFactory{}
 // This is an interface for anything that should be able to write logs
 
 type LoggerAppender interface {
-	Init(pattern string, property []Property) error
+	Init(pattern string, property []AppenderProperty) error
 
 	Start() error
 
@@ -60,21 +60,34 @@ func (laf *loggerAppenderFactory) new() *loggerAppenderFactory {
 	laf.typeLock.RLock()
 	defer laf.typeLock.RUnlock()
 
-	for _, la := range laf.appender {
-		la.Close()
+	if laf.appender != nil && len(laf.appender) > 0 {
+		for _, la := range laf.appender {
+			la.Close()
+		}
 	}
 
-	fmt.Println("Close LoggerAppenderFactory's loggerAppender")
-
-	fmt.Println("init LoggerAppenderFactory's loggerAppender")
 	laf.appender = make(map[string]LoggerAppender)
-	laf.appenderType = make(map[string]any)
+
+	if laf.appenderType == nil {
+		laf.appenderType = make(map[string]any)
+
+		fmt.Println("init LoggerAppenderFactory's loggerAppender")
+	}
+
 	return laf
 }
 
 func (laf *loggerAppenderFactory) RegistryType(typename string, typeClz any) *loggerAppenderFactory {
-	if laf.appender == nil {
-		laf = laf.new()
+
+	if reflect.TypeOf(typeClz).Kind() != reflect.Ptr {
+		panic(reflect.TypeOf(typeClz).String() + " is not a pointer of LoggerAppender")
+	}
+
+	laf.typeLock.RLock()
+	defer laf.typeLock.RUnlock()
+
+	if laf.appenderType == nil {
+		laf.appenderType = make(map[string]any)
 	}
 	//fmt.Println("registry one type ", typename, " ", reflect.ValueOf(typeClz))
 
@@ -84,18 +97,12 @@ func (laf *loggerAppenderFactory) RegistryType(typename string, typeClz any) *lo
 		panic(reflect.ValueOf(typeClz).String() + " is not a implementation of LoggerAppender")
 	}
 
-	laf.typeLock.RLock()
-	defer laf.typeLock.RUnlock()
-
 	laf.appenderType[strings.ToLower(typename)] = typeClz
 
 	return laf
 }
 
 func (laf *loggerAppenderFactory) getInterfaceByType(typename string) (any, error) {
-	if laf.appenderType == nil {
-		laf = laf.new()
-	}
 
 	rtn, ok := laf.appenderType[strings.ToLower(typename)]
 
@@ -114,16 +121,54 @@ func (laf *loggerAppenderFactory) DefaultLoggerAppender() (LoggerAppender, error
 	return laf.LoggerAppender("default")
 }
 
+func (laf *loggerAppenderFactory) getAppenderRefByName(name string) (LoggerAppender, error) {
+	if laf.appender == nil {
+		return nil, errors.New("LoggerAppenderFactory is not init")
+	}
+
+	if ap, ok := laf.appender[name]; !ok {
+		panic("LoggerAppender named '" + name + "' is not found.")
+	} else {
+		return ap, nil
+	}
+}
+
 func (laf *loggerAppenderFactory) registerLoggerAppender(name, typename, pattern string,
 	properties []AppenderProperty) (*loggerAppenderFactory, interface{}, error) {
 	laf.typeLock.RLock()
 	defer laf.typeLock.RUnlock()
+
+	if laf.appender == nil {
+		laf.appender = make(map[string]LoggerAppender)
+	}
+
+	if laf.appenderType == nil || len(laf.appenderType) == 0 {
+		panic("AppenderType is empty, please RegistryType at first")
+	}
 
 	itf, err := laf.getInterfaceByType(typename)
 
 	if err != nil {
 		return laf, nil, err
 	}
-	fmt.Println("interface : ", itf)
+
+	if _, ok := laf.appender[name]; ok {
+		panic("LoggerAppender named '" + name + "' is registry already.")
+	}
+
+	newObj := reflect.New(reflect.TypeOf(itf).Elem()).Interface().(LoggerAppender)
+	newObj.Init(pattern, properties)
+	newObj.Start()
+
+	laf.appender[name] = newObj
+
+	fmt.Printf("LoggerAppender(%v)[%v] is register with %q\n", reflect.TypeOf(newObj), &newObj, name)
+
+	//fmt.Printf("%v ========== %v \n", itf, newObj)
+	fmt.Printf("%v ========== %v \n", &itf, &newObj)
+	//fmt.Printf("%v ========== %v \n", reflect.TypeOf(&itf), reflect.TypeOf(&newObj))
+	fmt.Printf("%v ========== %v \n", reflect.TypeOf(itf), reflect.TypeOf(newObj))
+
+	//fmt.Println("interface : ", itf)
 	return laf, nil, nil
 }

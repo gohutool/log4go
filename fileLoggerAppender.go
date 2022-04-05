@@ -1,5 +1,7 @@
 package log4go
 
+import "os"
+
 /**
 * golang-sample源代码，版权归锦翰科技（深圳）有限公司所有。
 * <p>
@@ -18,9 +20,34 @@ func init() {
 
 type FileLoggerAppender struct {
 	pattern string
+	// The opened file
+	filename string
+	file     *os.File
+
+	// The logging format
+	format string
+
+	// File header/trailer
+	header, trailer string
+
+	// Rotate at linecount
+	maxlines          int
+	maxlines_curlines int
+
+	// Rotate at size
+	maxsize         int
+	maxsize_cursize int
+
+	// Rotate daily
+	daily          bool
+	daily_opendate int
+
+	// Keep old logfiles (.001, .002, etc)
+	rotate    bool
+	maxbackup int
 }
 
-func (cla FileLoggerAppender) Init(pattern string, property []Property) error {
+func (cla FileLoggerAppender) Init(pattern string, property []AppenderProperty) error {
 	return nil
 }
 

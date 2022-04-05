@@ -24,4 +24,7 @@ func TestConfiguration(t *testing.T) {
 
 func TestLoggerAppenderFactoryGetType(t *testing.T) {
 	fmt.Println(LoggerAppenderFactory.getInterfaceByType("Console"))
+
+	LoggerAppenderFactory.registerLoggerAppender("default", "console", "", nil)
+	LoggerAppenderFactory.registerLoggerAppender("default", "console", "", nil)
 }

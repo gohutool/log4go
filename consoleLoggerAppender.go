@@ -1,5 +1,7 @@
 package log4go
 
+import "fmt"
+
 /**
 * golang-sample源代码，版权归锦翰科技（深圳）有限公司所有。
 * <p>
@@ -20,7 +22,10 @@ type ConsoleLoggerAppender struct {
 	pattern string
 }
 
-func (cla ConsoleLoggerAppender) Init(pattern string, property []Property) error {
+func (cla ConsoleLoggerAppender) Init(pattern string, property []AppenderProperty) error {
+
+	fmt.Println("ConsoleLoggerAppender init with ", property, pattern)
+
 	return nil
 }
 

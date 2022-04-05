@@ -20,7 +20,7 @@ type SocketLoggerAppender struct {
 	pattern string
 }
 
-func (cla SocketLoggerAppender) Init(pattern string, property []Property) error {
+func (cla SocketLoggerAppender) Init(pattern string, property []AppenderProperty) error {
 	return nil
 }
 

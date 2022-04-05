@@ -19,22 +19,17 @@ import (
 * 修改历史 : 1. [2022/4/4 22:08] 创建文件 by NST
 */
 
-type Property struct {
-	Name  string `xml:"name,attr"`
-	Value string `xml:",chardata"`
-}
-
 type AppenderProperty struct {
 	Name  string `xml:"name,attr"`
 	Value string `xml:",chardata"`
 }
 
 type AppenderConfig struct {
-	Enabled  string     `xml:"enabled,attr"`
-	Name     string     `xml:"name,attr"`
-	Type     string     `xml:"type"`
-	Pattern  string     `xml:"pattern"`
-	Property []Property `xml:"property"`
+	Enabled  string             `xml:"enabled,attr"`
+	Name     string             `xml:"name,attr"`
+	Type     string             `xml:"type"`
+	Pattern  string             `xml:"pattern"`
+	Property []AppenderProperty `xml:"property"`
 }
 
 type AppenderRef struct {

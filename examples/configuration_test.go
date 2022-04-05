@@ -26,7 +26,7 @@ type SampleLoggerAppender struct {
 	pattern string
 }
 
-func (cla SampleLoggerAppender) Init(pattern string, property []log4go.Property) error {
+func (cla SampleLoggerAppender) Init(pattern string, property []log4go.AppenderProperty) error {
 	return nil
 }
 
