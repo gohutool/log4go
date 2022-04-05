@@ -53,6 +53,20 @@ type LoggerConfiguration struct {
 	Logger   []LoggerConfig   `xml:"logger"`
 }
 
+func LoadXML(content string) LoggerConfiguration {
+	b := []byte(content)
+
+	xc := new(LoggerConfiguration)
+
+	if err := xml.Unmarshal(b, xc); err != nil {
+		msg := fmt.Sprintf("LoadConfiguration: Error: Could not parse XML configuration in %q: %s\n", content, err)
+		fmt.Fprintln(os.Stderr, msg)
+		panic(msg)
+	}
+
+	return *xc
+}
+
 func LoadXMLConfigurationProperties(filename string) LoggerConfiguration {
 	fd, err := os.Open(filename)
 	if err != nil {

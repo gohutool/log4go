@@ -31,5 +31,13 @@ func TestLoggerAppenderFactoryGetType(t *testing.T) {
 
 func TestLoadXMLConfiguration(t *testing.T) {
 	xc := LoggerManager.InitWithXML("./examples/example.xml")
-	fmt.Printf("%+v", xc)
+	fmt.Printf("%+v\n", xc)
+}
+
+func TestLoadDefaultConfiguration(t *testing.T) {
+	xc := LoggerManager.InitWithDefaultConfig()
+	fmt.Printf("%+v\n", xc)
+
+	xc = LoggerManager.InitWithXML("./examples/example.xml")
+	fmt.Printf("%+v\n", xc)
 }

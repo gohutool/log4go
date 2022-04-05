@@ -22,26 +22,26 @@ type ConsoleLoggerAppender struct {
 	pattern string
 }
 
-func (cla ConsoleLoggerAppender) Init(pattern string, property []AppenderProperty) error {
+func (cla *ConsoleLoggerAppender) Init(pattern string, property []AppenderProperty) error {
 
 	fmt.Println("ConsoleLoggerAppender init with ", property, pattern)
 
 	return nil
 }
 
-func (cla ConsoleLoggerAppender) Start() error {
+func (cla *ConsoleLoggerAppender) Start() error {
 	return nil
 }
 
 // LogWrite
 //This will be called to log a LogRecord message.
-func (cla ConsoleLoggerAppender) LogWrite(rec *LogRecord) error {
+func (cla *ConsoleLoggerAppender) LogWrite(rec *LogRecord) error {
 	return nil
 }
 
 // Close
 // This should clean up anything lingering about the LogWriter, as it is called before
 // the LogWriter is removed.  LogWrite should not be called after Close.
-func (cla ConsoleLoggerAppender) Close() error {
+func (cla *ConsoleLoggerAppender) Close() error {
 	return nil
 }

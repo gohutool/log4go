@@ -53,8 +53,8 @@
 
   <logger name="Demo">
     <level>info</level>
-    <appender-ref ref="file" />
     <appender-ref ref="console" />
+    <appender-ref ref="file" />
   </logger>
 
   <!-- 输出级别是info级别及以上的日志，下面的ref关联的两个appender没有filter设置，所以，info及以上的日志都是会输出到这2个appender的 -->

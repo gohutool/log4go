@@ -191,15 +191,32 @@ type LoggerAppenderReference struct {
 	appender []LoggerAppender
 }
 
-func (lm loggerManager) GetLogger(name string) *Logger {
+func (lm *loggerManager) GetLogger(name string) *Logger {
 	return nil
 }
 
-func (lm loggerManager) InitWithDefaultConfig() error {
-	return lm.InitWithConfig(LoggerConfiguration{})
+func (lm *loggerManager) InitWithDefaultConfig() error {
+	content := `<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <appender enabled="true" name="console">
+    <type>console</type>
+    <pattern>[%D %T] [%L] (%S) %M</pattern>
+    <!-- level is (:?FINEST|FINE|DEBUG|TRACE|INFO|WARNING|ERROR) -->
+  </appender>
+  
+  <!-- 输出级别是info级别及以上的日志，下面的ref关联的两个appender没有filter设置，所以，info及以上的日志都是会输出到这2个appender的 -->
+  <root>
+    <level>info</level>
+    <appender-ref ref="console" />
+  </root>
+
+</configuration>
+`
+	lc := LoadXML(content)
+	return lm.InitWithConfig(lc)
 }
 
-func (lm loggerManager) InitWithConfig(configuration LoggerConfiguration) error {
+func (lm *loggerManager) InitWithConfig(configuration LoggerConfiguration) error {
 	lm.laf = LoggerAppenderFactory.new()
 	lm.loggerMap = make(map[string]LoggerAppenderReference)
 	lm.rootLogger = LoggerAppenderReference{}
@@ -221,7 +238,7 @@ func (lm loggerManager) InitWithConfig(configuration LoggerConfiguration) error 
 	}
 
 	lm.rootLogger.level = str2LevelText(rc.Level)
-	lm.rootLogger.appender = make([]LoggerAppender, 10, 10)
+	lm.rootLogger.appender = make([]LoggerAppender, 0, 10)
 
 	if rc.Appender != nil && len(rc.Appender) > 0 {
 		for _, appenderRef := range rc.Appender {
@@ -240,7 +257,7 @@ func (lm loggerManager) InitWithConfig(configuration LoggerConfiguration) error 
 		for _, logger := range configuration.Logger {
 			oneLogger := LoggerAppenderReference{}
 			oneLogger.level = str2LevelText(logger.Level)
-			oneLogger.appender = make([]LoggerAppender, 10, 10)
+			oneLogger.appender = make([]LoggerAppender, 0, 10)
 
 			for _, appenderRef := range logger.Appender {
 				ap, e := lm.laf.getAppenderRefByName(appenderRef.Ref)
@@ -261,7 +278,7 @@ func (lm loggerManager) InitWithConfig(configuration LoggerConfiguration) error 
 	return nil
 }
 
-func (lm loggerManager) InitWithXML(xmlFile string) error {
+func (lm *loggerManager) InitWithXML(xmlFile string) error {
 	lc := LoadXMLConfigurationProperties(xmlFile)
 	return lm.InitWithConfig(lc)
 }

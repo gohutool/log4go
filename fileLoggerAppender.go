@@ -47,23 +47,23 @@ type FileLoggerAppender struct {
 	maxbackup int
 }
 
-func (cla FileLoggerAppender) Init(pattern string, property []AppenderProperty) error {
+func (cla *FileLoggerAppender) Init(pattern string, property []AppenderProperty) error {
 	return nil
 }
 
-func (cla FileLoggerAppender) Start() error {
+func (cla *FileLoggerAppender) Start() error {
 	return nil
 }
 
 // LogWrite
 //This will be called to log a LogRecord message.
-func (cla FileLoggerAppender) LogWrite(rec *LogRecord) error {
+func (cla *FileLoggerAppender) LogWrite(rec *LogRecord) error {
 	return nil
 }
 
 // Close
 // This should clean up anything lingering about the LogWriter, as it is called before
 // the LogWriter is removed.  LogWrite should not be called after Close.
-func (cla FileLoggerAppender) Close() error {
+func (cla *FileLoggerAppender) Close() error {
 	return nil
 }
