@@ -40,7 +40,7 @@ type LoggerAppender interface {
 
 	// LogWrite
 	//This will be called to log a LogRecord message.
-	LogWrite(rec *LogRecord) error
+	LogWrite(rec LogRecord) error
 
 	// Close
 	// This should clean up anything lingering about the LogWriter, as it is called before

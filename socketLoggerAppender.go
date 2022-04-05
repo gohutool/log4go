@@ -1,5 +1,7 @@
 package log4go
 
+import "fmt"
+
 /**
 * golang-sample源代码，版权归锦翰科技（深圳）有限公司所有。
 * <p>
@@ -30,7 +32,8 @@ func (cla *SocketLoggerAppender) Start() error {
 
 // LogWrite
 //This will be called to log a LogRecord message.
-func (cla *SocketLoggerAppender) LogWrite(rec *LogRecord) error {
+func (cla *SocketLoggerAppender) LogWrite(rec LogRecord) error {
+	fmt.Printf("[Socket] %+v\n", rec)
 	return nil
 }
 

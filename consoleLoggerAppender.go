@@ -35,7 +35,8 @@ func (cla *ConsoleLoggerAppender) Start() error {
 
 // LogWrite
 //This will be called to log a LogRecord message.
-func (cla *ConsoleLoggerAppender) LogWrite(rec *LogRecord) error {
+func (cla *ConsoleLoggerAppender) LogWrite(rec LogRecord) error {
+	fmt.Printf("[Console] %+v\n", rec)
 	return nil
 }
 

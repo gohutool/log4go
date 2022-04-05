@@ -3,7 +3,6 @@ package log4go
 import (
 	"fmt"
 	"strings"
-	"time"
 )
 
 /**
@@ -135,49 +134,6 @@ func (l LevelText) Level() Level {
 	return INFO_TXT*/
 }
 
-// A LogRecord contains all the pertinent information for each message
-type LogRecord struct {
-	Level   Level     // The log level
-	Created time.Time // The time at which the log message was created (nanoseconds)
-	Source  string    // The message source
-	Message string    // The log message
-}
-
-type Logger struct {
-}
-
-func (c *Logger) Critical(arg0 interface{}, args ...interface{}) error {
-	return nil
-}
-
-func (c *Logger) Error(arg0 interface{}, args ...interface{}) error {
-	return nil
-}
-
-func (c *Logger) Warning(arg0 interface{}, args ...interface{}) error {
-	return nil
-}
-
-func (c *Logger) Info(arg0 interface{}, args ...interface{}) error {
-	return nil
-}
-
-func (c *Logger) Trace(arg0 interface{}, args ...interface{}) error {
-	return nil
-}
-
-func (c *Logger) Debug(arg0 interface{}, args ...interface{}) error {
-	return nil
-}
-
-func (c *Logger) Fine(arg0 interface{}, args ...interface{}) error {
-	return nil
-}
-
-func (c *Logger) Finest(arg0 interface{}, args ...interface{}) error {
-	return nil
-}
-
 var LoggerManager = &loggerManager{}
 
 type loggerManager struct {
@@ -191,8 +147,9 @@ type LoggerAppenderReference struct {
 	appender []LoggerAppender
 }
 
-func (lm *loggerManager) GetLogger(name string) *Logger {
-	return nil
+func (lm *loggerManager) GetLogger(name string) Logger {
+	logger := Logger{Name: name}
+	return logger
 }
 
 func (lm *loggerManager) InitWithDefaultConfig() error {
@@ -221,9 +178,12 @@ func (lm *loggerManager) InitWithConfig(configuration LoggerConfiguration) error
 	lm.loggerMap = make(map[string]LoggerAppenderReference)
 	lm.rootLogger = LoggerAppenderReference{}
 
+	enabledMap := make(map[string]bool)
+
 	if configuration.Appender != nil && len(configuration.Appender) > 0 {
 		// init all of appender at first
 		for _, appender := range configuration.Appender {
+			enabledMap[strings.ToLower(appender.Name)] = strings.TrimSpace(strings.ToLower(appender.Enabled)) != "false"
 			_, _, e := lm.laf.registerLoggerAppender(appender.Name, appender.Type, appender.Pattern, appender.Property)
 			if e != nil {
 				panic(fmt.Sprintf("Add Appender[%v] %v", appender.Name, e.Error()))
@@ -242,12 +202,18 @@ func (lm *loggerManager) InitWithConfig(configuration LoggerConfiguration) error
 
 	if rc.Appender != nil && len(rc.Appender) > 0 {
 		for _, appenderRef := range rc.Appender {
-			ap, e := lm.laf.getAppenderRefByName(appenderRef.Ref)
-			if e == nil {
-				lm.rootLogger.appender = append(lm.rootLogger.appender, ap)
-			} else {
-				fmt.Println("[Warning] ", e.Error())
+
+			enable, ok := enabledMap[strings.ToLower(appenderRef.Ref)]
+
+			if ok && enable {
+				ap, e := lm.laf.getAppenderRefByName(appenderRef.Ref)
+				if e == nil {
+					lm.rootLogger.appender = append(lm.rootLogger.appender, ap)
+				} else {
+					fmt.Println("[Warning] ", e.Error())
+				}
 			}
+
 		}
 	}
 	// init root end
@@ -260,11 +226,15 @@ func (lm *loggerManager) InitWithConfig(configuration LoggerConfiguration) error
 			oneLogger.appender = make([]LoggerAppender, 0, 10)
 
 			for _, appenderRef := range logger.Appender {
-				ap, e := lm.laf.getAppenderRefByName(appenderRef.Ref)
-				if e == nil {
-					oneLogger.appender = append(oneLogger.appender, ap)
-				} else {
-					fmt.Println("[Warning] ", e.Error())
+				enable, ok := enabledMap[strings.ToLower(appenderRef.Ref)]
+
+				if ok && enable {
+					ap, e := lm.laf.getAppenderRefByName(appenderRef.Ref)
+					if e == nil {
+						oneLogger.appender = append(oneLogger.appender, ap)
+					} else {
+						fmt.Println("[Warning] ", e.Error())
+					}
 				}
 			}
 

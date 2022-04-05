@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log4go"
 	"testing"
+	"time"
 )
 
 /**
@@ -36,7 +37,8 @@ func (cla SampleLoggerAppender) Start() error {
 
 // LogWrite
 //This will be called to log a LogRecord message.
-func (cla SampleLoggerAppender) LogWrite(rec *log4go.LogRecord) error {
+func (cla SampleLoggerAppender) LogWrite(rec log4go.LogRecord) error {
+	fmt.Printf("[Sample] %+v\n", rec)
 	return nil
 }
 
@@ -49,4 +51,14 @@ func (cla SampleLoggerAppender) Close() error {
 
 func TestInitExample(t *testing.T) {
 	fmt.Println(log4go.LoggerAppenderFactory.LoggerAppender(""))
+}
+
+var logger = log4go.LoggerManager.GetLogger("com.hello")
+
+func TestLogger(t *testing.T) {
+	log4go.LoggerManager.InitWithDefaultConfig()
+	logger.Info("hello")
+	logger.Info("hello")
+
+	time.Sleep(10 * time.Second)
 }

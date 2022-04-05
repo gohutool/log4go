@@ -1,6 +1,9 @@
 package log4go
 
-import "os"
+import (
+	"fmt"
+	"os"
+)
 
 /**
 * golang-sample源代码，版权归锦翰科技（深圳）有限公司所有。
@@ -57,7 +60,8 @@ func (cla *FileLoggerAppender) Start() error {
 
 // LogWrite
 //This will be called to log a LogRecord message.
-func (cla *FileLoggerAppender) LogWrite(rec *LogRecord) error {
+func (cla *FileLoggerAppender) LogWrite(rec LogRecord) error {
+	fmt.Printf("[File] %+v\n", rec)
 	return nil
 }
 
