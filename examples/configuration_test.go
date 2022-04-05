@@ -2,7 +2,7 @@ package examples
 
 import (
 	"fmt"
-	"log4go"
+	"github.com/gohutool/log4go"
 	"testing"
 	"time"
 )
