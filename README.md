@@ -9,7 +9,7 @@ This project is come from an unmaintained fork, the branch can see http://log4go
 
 Usage:
 - Add the following import:
-import l4g "github.com/gohutool/log4go"
+import log4go with "github.com/gohutool/log4go"
 - log4go configuration sample
 
 ./examples/example.xml
