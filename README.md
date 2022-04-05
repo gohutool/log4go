@@ -11,6 +11,12 @@ This project is come from an unmaintained fork, the branch can see http://log4go
 Usage:
 - Add the following import:
 import l4g "github.com/gohutool/log4go"
+```
+LoggerManager.InitWithXML("./examples/example.xml")
+var logger = log4go.LoggerManager.GetLogger("com.hello")
+logger.Info("hello")
+logger.Info("hello")
+```
 
 Acknowledgements:
 - pomack
