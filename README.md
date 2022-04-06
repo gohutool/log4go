@@ -38,26 +38,38 @@ import "github.com/gohutool/log4go"
        It ignores unknown format strings (and removes them)
        Recommended: "[%D %T] [%L] (%S) %M"
     -->
-    <property name="rotate">false</property> <!-- true enables log rotation, otherwise append -->
-    <property name="maxsize">0M</property> <!-- \d+[KMG]? Suffixes are in terms of 2**10 -->
-    <property name="maxlines">0K</property> <!-- \d+[KMG]? Suffixes are in terms of thousands -->
-    <property name="daily">true</property> <!-- Automatically rotates when a log message is written after midnight -->
+    <property name="rotate">false</property> 
+    <!-- true enables log rotation, otherwise append -->
+    <property name="maxsize">0M</property> 
+    <!-- \d+[KMG]? Suffixes are in terms of 2**10 -->
+    <property name="maxlines">0K</property> 
+    <!-- \d+[KMG]? Suffixes are in terms of thousands -->
+    <property name="daily">true</property> 
+    <!-- Automatically rotates when a log message is written after midnight -->
   </appender>
   <appender enabled="true" name="testfile">
     <type>file</type>
     <pattern>[%D %T] [%L] (%S) %M</pattern>
     <property name="filename">trace.xml</property>
-    <property name="rotate">false</property> <!-- true enables log rotation, otherwise append -->
-    <property name="maxsize">100M</property> <!-- \d+[KMG]? Suffixes are in terms of 2**10 -->
-    <property name="maxrecords">6K</property> <!-- \d+[KMG]? Suffixes are in terms of thousands -->
-    <property name="daily">false</property> <!-- Automatically rotates when a log message is written after midnight -->
+    <property name="rotate">false</property> 
+    <!-- true enables log rotation, otherwise append -->
+    <property name="maxsize">100M</property> 
+    <!-- \d+[KMG]? Suffixes are in terms of 2**10 -->
+    <property name="maxrecords">6K</property> 
+    <!-- \d+[KMG]? Suffixes are in terms of thousands -->
+    <property name="daily">false</property> 
+    <!-- Automatically rotates when a log message is written after midnight -->
   </appender>
-  <appender enabled="false" name="logstash"><!-- enabled=false means this logger won't actually be created -->
+  <!-- enabled=false means this logger won't actually be created -->
+  <appender enabled="false" name="logstash">
     <type>socket</type>
     <pattern>[%D %T] [%L] (%S) %M</pattern>
-    <property name="endpoint">192.168.1.255:12124</property> <!-- recommend UDP broadcast -->
-    <property name="protocol">udp</property> <!-- tcp or udp -->
+    <property name="endpoint">192.168.1.255:12124</property> 
+    <!-- recommend UDP broadcast -->
+    <property name="protocol">udp</property> 
+    <!-- tcp or udp -->
   </appender>
+  
   <!-- 这个就是自定义的一个logger -->
   <!-- 输出级别是info级别及以上的日志，不要怕，StreamOperateFile已经过滤，只输出info级别的日志 -->
   <!-- additivity 这个默认是true，即继承父类 root logger -->
