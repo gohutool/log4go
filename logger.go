@@ -31,6 +31,7 @@ type logMetrics struct {
 
 // A LogRecord contains all the pertinent information for each message
 type LogRecord struct {
+	TagName string    // The tag name
 	Level   Level     // The log level
 	Created time.Time // The time at which the log message was created (nanoseconds)
 	Source  string    // The message source
@@ -79,22 +80,23 @@ func (c Logger) log(level Level, arg0 any, args ...any) error {
 	switch first := arg0.(type) {
 	case string:
 		// Use the string as a format string
-		msg = BuildString(first, args...)
+		msg = BuildFormatString(first, args...)
 	case func(...any) string:
 		// loglog the closure (no other arguments used)
 		msg = first(args...)
 	default:
 		// Build a format string so that it will be similar to Sprint
-		msg = BuildString(BuildString("%v", first)+strings.Repeat(" %v", len(args)), args...)
+		msg = BuildFormatString(BuildFormatString("%v", first)+strings.Repeat(" %v", len(args)), args...)
 	}
 
 	pc, _, lineno, ok := runtime.Caller(2)
 	src := ""
 	if ok {
-		src = BuildString("%v:%v", runtime.FuncForPC(pc).Name(), lineno)
+		src = BuildFormatString("%v:%v", runtime.FuncForPC(pc).Name(), lineno)
 	}
 
 	rec := &LogRecord{
+		TagName: c.Name,
 		Level:   level,
 		Created: time.Now(),
 		Source:  src,
@@ -127,7 +129,7 @@ func (c Logger) appendLog(lvl Level, rec *LogRecord, appenderRef LoggerAppenderR
 		/*pc, _, lineno, ok := runtime.Caller(2)
 		src := ""
 		if ok {
-			src = BuildString("%v:%d", runtime.FuncForPC(pc).Name(), lineno)
+			src = BuildFormatString("%v:%d", runtime.FuncForPC(pc).Name(), lineno)
 		}*/
 		// Make the log record
 

@@ -55,7 +55,7 @@ type loggerAppenderFactory struct {
 }
 
 func (laf *loggerAppenderFactory) new() *loggerAppenderFactory {
-	fmt.Println("New LoggerAppenderFactory")
+	LoggerManager.debug("New LoggerAppenderFactory")
 
 	laf.typeLock.RLock()
 	defer laf.typeLock.RUnlock()
@@ -71,7 +71,7 @@ func (laf *loggerAppenderFactory) new() *loggerAppenderFactory {
 	if laf.appenderType == nil {
 		laf.appenderType = make(map[string]any)
 
-		fmt.Println("init LoggerAppenderFactory's loggerAppender")
+		LoggerManager.debug("init LoggerAppenderFactory's loggerAppender")
 	}
 
 	return laf
@@ -92,7 +92,7 @@ func (laf *loggerAppenderFactory) RegistryType(typename string, typeClz any) *lo
 	//fmt.Println("registry one type ", typename, " ", reflect.ValueOf(typeClz))
 
 	if app, ok := typeClz.(LoggerAppender); ok {
-		fmt.Println("registry one type ", typename, " ", reflect.TypeOf(app))
+		LoggerManager.debug("registry one type ", typename, " ", reflect.TypeOf(app))
 	} else {
 		panic(reflect.ValueOf(typeClz).String() + " is not a implementation of LoggerAppender")
 	}
@@ -165,13 +165,13 @@ func (laf *loggerAppenderFactory) registerLoggerAppender(name, typename, pattern
 
 	laf.appender[name] = newObj
 
-	fmt.Printf("LoggerAppender(%v)[%v] is register with %q\n", reflect.TypeOf(newObj), &newObj, name)
+	LoggerManager.debug(fmt.Sprintf("LoggerAppender(%v)[%v] is register with %q", reflect.TypeOf(newObj), &newObj, name))
 
-	//fmt.Printf("%v ========== %v \n", itf, newObj)
-	fmt.Printf("%v ========== %v \n", &itf, &newObj)
-	//fmt.Printf("%v ========== %v \n", reflect.TypeOf(&itf), reflect.TypeOf(&newObj))
-	fmt.Printf("%v ========== %v \n", reflect.TypeOf(itf), reflect.TypeOf(newObj))
+	//LoggerManager.debug(fmt.Sprintf("%v ========== %v \n", itf, newObj))
+	LoggerManager.debug(fmt.Sprintf("%v ========== %v ", &itf, &newObj))
+	//LoggerManager.debug(fmt.Sprintf("%v ========== %v \n", reflect.TypeOf(&itf), reflect.TypeOf(&newObj)))
+	LoggerManager.debug(fmt.Sprintf("%v ========== %v ", reflect.TypeOf(itf), reflect.TypeOf(newObj)))
 
-	//fmt.Println("interface : ", itf)
+	//LoggerManager.debug("interface : ", itf)
 	return laf, nil, nil
 }

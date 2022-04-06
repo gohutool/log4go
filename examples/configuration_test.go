@@ -20,6 +20,8 @@ import (
 */
 
 func init() {
+
+	//log4go.LoggerManager.SetDebug(true)
 	log4go.LoggerAppenderFactory.RegistryType("sample", &SampleLoggerAppender{})
 }
 
@@ -53,8 +55,6 @@ func TestInitExample(t *testing.T) {
 	fmt.Println(log4go.LoggerAppenderFactory.LoggerAppender(""))
 }
 
-var logger = log4go.LoggerManager.GetLogger("com.hello")
-
 func TestLogger(t *testing.T) {
 	log4go.LoggerManager.InitWithDefaultConfig()
 	logger.Info("hello")
@@ -63,4 +63,16 @@ func TestLogger(t *testing.T) {
 	logger.Error("hello")
 
 	time.Sleep(10 * time.Second)
+}
+
+var logger = log4go.LoggerManager.GetLogger("com.hello")
+
+func TestLoggerExample(t *testing.T) {
+	log4go.LoggerManager.InitWithXML("./example.xml")
+	logger.Info("hello")
+	logger.Info("hello")
+	time.Sleep(1 * time.Second)
+	logger.Error("hello")
+
+	time.Sleep(3 * time.Second)
 }

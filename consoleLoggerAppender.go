@@ -1,6 +1,9 @@
 package log4go
 
-import "fmt"
+import (
+	"fmt"
+	"os"
+)
 
 /**
 * golang-sample源代码，版权归锦翰科技（深圳）有限公司所有。
@@ -24,19 +27,26 @@ type ConsoleLoggerAppender struct {
 
 func (cla *ConsoleLoggerAppender) Init(pattern string, property []AppenderProperty) error {
 
-	fmt.Println("ConsoleLoggerAppender init with ", property, pattern)
+	if len(pattern) == 0 {
+		cla.pattern = "[%T %D %m] [%L][%l] (%S) %M"
+	} else {
+		cla.pattern = pattern
+	}
+
+	LoggerManager.debug("[Log4go]ConsoleLoggerAppender init with ", property, pattern)
 
 	return nil
 }
 
 func (cla *ConsoleLoggerAppender) Start() error {
+	LoggerManager.debug("[Log4go]Start ConsoleLoggerAppender")
 	return nil
 }
 
 // LogWrite
 //This will be called to log a LogRecord message.
 func (cla *ConsoleLoggerAppender) LogWrite(rec LogRecord) error {
-	fmt.Printf("[Console] %+v\n", rec)
+	fmt.Fprint(os.Stdout, getDefaultPatternConvert().FormatLogRecord(cla.pattern, rec))
 	return nil
 }
 
@@ -44,5 +54,6 @@ func (cla *ConsoleLoggerAppender) LogWrite(rec LogRecord) error {
 // This should clean up anything lingering about the LogWriter, as it is called before
 // the LogWriter is removed.  LogWrite should not be called after Close.
 func (cla *ConsoleLoggerAppender) Close() error {
+	LoggerManager.debug("[Log4go]Close ConsoleLoggerAppender")
 	return nil
 }

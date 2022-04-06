@@ -2,12 +2,12 @@
 <configuration>
   <appender enabled="true" name="console">
     <type>console</type>
-    <pattern>[%D %T] [%L] (%S) %M</pattern>
+    <pattern>[%D %T %m] [%L][%l] (%S) %M</pattern>
     <!-- level is (:?FINEST|FINE|DEBUG|TRACE|INFO|WARNING|ERROR) -->
   </appender>
   <appender enabled="true" name="file">
     <type>file</type>
-    <pattern>[%D %T] [%L] (%S) %M</pattern>
+    <pattern>[%D %T %m] [%L][%l] (%S) %M</pattern>
     <property name="filename">test.log</property>
     <!--
        %T - Time (15:04:05 MST)
@@ -27,7 +27,7 @@
   </appender>
   <appender enabled="true" name="testfile">
     <type>file</type>
-    <pattern>[%D %T] [%L] (%S) %M</pattern>
+    <pattern>[%D %T %m] [%L][%l] (%S) %M</pattern>
     <property name="filename">trace.xml</property>
     <property name="rotate">false</property> <!-- true enables log rotation, otherwise append -->
     <property name="maxsize">100M</property> <!-- \d+[KMG]? Suffixes are in terms of 2**10 -->
@@ -36,7 +36,7 @@
   </appender>
   <appender enabled="false" name="logstash"><!-- enabled=false means this logger won't actually be created -->
     <type>socket</type>
-    <pattern>[%D %T] [%L] (%S) %M</pattern>
+    <pattern>[%D %T %m] [%L][%l] (%S) %M</pattern>
     <property name="endpoint">192.168.1.255:12124</property> <!-- recommend UDP broadcast -->
     <property name="protocol">udp</property> <!-- tcp or udp -->
   </appender>
@@ -60,7 +60,7 @@
   <!-- 输出级别是info级别及以上的日志，下面的ref关联的两个appender没有filter设置，所以，info及以上的日志都是会输出到这2个appender的 -->
   <root>
     <level>info</level>
-    <appender-ref ref="testfile" />
+    <appender-ref ref="console" />
     <appender-ref ref="logstash" />
   </root>
 

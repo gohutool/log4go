@@ -52,3 +52,7 @@ func TestLoadDefaultConfiguration(t *testing.T) {
 	xc = LoggerManager.InitWithXML("./examples/example.xml")
 	fmt.Printf("%+v\n", xc)
 }
+
+func TestLeftPad(t *testing.T) {
+	fmt.Println(LeftPad("123", 5, '0'))
+}

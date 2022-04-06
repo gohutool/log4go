@@ -14,6 +14,25 @@ import "fmt"
 * 修改历史 : 1. [2022/4/5 21:17] 创建文件 by NST
 */
 
-func BuildString(format string, a ...any) string {
+func BuildFormatString(format string, a ...any) string {
 	return fmt.Sprintf(format, a...)
+}
+
+func BuildString(a ...any) string {
+	return fmt.Sprint(a...)
+}
+
+func LeftPad(str string, limit int, placeholder rune) string {
+	len := limit - len(str)
+	if len >= limit {
+		return str
+	}
+
+	arr := make([]any, 0, len)
+	for idx := 0; idx < len; idx++ {
+		arr = append(arr, string(placeholder))
+	}
+	arr = append(arr, str)
+
+	return BuildString(arr...)
 }

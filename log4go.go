@@ -134,9 +134,10 @@ func (l LevelText) Level() Level {
 	return INFO_TXT*/
 }
 
-var LoggerManager = &loggerManager{}
+var LoggerManager = &loggerManager{_debug: false}
 
 type loggerManager struct {
+	_debug     bool
 	laf        *loggerAppenderFactory
 	rootLogger LoggerAppenderReference
 	loggerMap  map[string]LoggerAppenderReference
@@ -152,12 +153,23 @@ func (lm *loggerManager) GetLogger(name string) Logger {
 	return logger
 }
 
+func (lm *loggerManager) SetDebug(debug bool) error {
+	lm._debug = debug
+	return nil
+}
+
+func (lm *loggerManager) debug(a ...any) {
+	if LoggerManager._debug {
+		fmt.Println(a...)
+	}
+}
+
 func (lm *loggerManager) InitWithDefaultConfig() error {
 	content := `<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
   <appender enabled="true" name="console">
     <type>console</type>
-    <pattern>[%D %T] [%L] (%S) %M</pattern>
+    <pattern1>[%D %T] [%L] (%S) %M</pattern1>
     <!-- level is (:?FINEST|FINE|DEBUG|TRACE|INFO|WARNING|ERROR) -->
   </appender>
   
