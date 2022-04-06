@@ -1,6 +1,9 @@
 package log4go
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 /**
 * golang-sample源代码，版权归锦翰科技（深圳）有限公司所有。
@@ -35,4 +38,24 @@ func LeftPad(str string, limit int, placeholder rune) string {
 	arr = append(arr, str)
 
 	return BuildString(arr...)
+}
+
+// Parse a number with K/M/G suffixes based on thousands (1000) or 2^10 (1024)
+func strToNumSuffix(str string, mult int) int {
+	num := 1
+	if len(str) > 1 {
+		switch str[len(str)-1] {
+		case 'G', 'g':
+			num *= mult
+			fallthrough
+		case 'M', 'm':
+			num *= mult
+			fallthrough
+		case 'K', 'k':
+			num *= mult
+			str = str[0 : len(str)-1]
+		}
+	}
+	parsed, _ := strconv.Atoi(str)
+	return parsed * num
 }

@@ -2,6 +2,7 @@ package log4go
 
 import (
 	"fmt"
+	"os"
 	"strings"
 )
 
@@ -22,6 +23,13 @@ const (
 	L4G_MAJOR   = 1
 	L4G_MINOR   = 0
 	L4G_BUILD   = 1
+)
+
+/****** Variables ******/
+var (
+	// LogBufferLength specifies how many log messages a particular log4go
+	// logger can buffer at a time before writing them.
+	LogBufferLength = 32
 )
 
 type Level int
@@ -164,6 +172,18 @@ func (lm *loggerManager) debug(a ...any) {
 	}
 }
 
+func (lm *loggerManager) error(a ...any) {
+	if LoggerManager._debug {
+		fmt.Fprintln(os.Stderr, a...)
+	}
+}
+
+func (lm *loggerManager) warning(a ...any) {
+	if LoggerManager._debug {
+		fmt.Fprintln(os.Stdout, a...)
+	}
+}
+
 func (lm *loggerManager) InitWithDefaultConfig() error {
 	content := `<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
@@ -196,9 +216,14 @@ func (lm *loggerManager) InitWithConfig(configuration LoggerConfiguration) error
 		// init all of appender at first
 		for _, appender := range configuration.Appender {
 			enabledMap[strings.ToLower(appender.Name)] = strings.TrimSpace(strings.ToLower(appender.Enabled)) != "false"
-			_, _, e := lm.laf.registerLoggerAppender(appender.Name, appender.Type, appender.Pattern, appender.Property)
-			if e != nil {
-				panic(fmt.Sprintf("Add Appender[%v] %v", appender.Name, e.Error()))
+
+			if enabledMap[strings.ToLower(appender.Name)] {
+				_, _, e := lm.laf.registerLoggerAppender(appender.Name, appender.Type, appender.Pattern, appender.Property)
+				if e != nil {
+					panic(fmt.Sprintf("Add Appender[%v] %v", appender.Name, e.Error()))
+				}
+			} else {
+				LoggerManager.warning("Appender \""+appender.Name, "\" is disabled")
 			}
 		}
 	}
