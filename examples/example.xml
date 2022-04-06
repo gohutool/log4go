@@ -34,11 +34,14 @@
     <property name="maxrecords">6K</property> <!-- \d+[KMG]? Suffixes are in terms of thousands -->
     <property name="daily">false</property> <!-- Automatically rotates when a log message is written after midnight -->
   </appender>
-  <appender enabled="false" name="logstash"><!-- enabled=false means this logger won't actually be created -->
+  <appender enabled="true" name="logstash"><!-- enabled=false means this logger won't actually be created -->
     <type>socket</type>
     <pattern>[%D %T %m] [%L][%l] (%S) %M</pattern>
-    <property name="endpoint">192.168.1.255:12124</property> <!-- recommend UDP broadcast -->
-    <property name="protocol">udp</property> <!-- tcp or udp -->
+    <property name="endpoint">192.168.56.1:12124</property> <!-- recommend UDP broadcast -->
+    <property name="protocol">tcp</property> <!-- tcp or udp -->
+    <property name="retry">-1</property> <!-- 断线重连，设置为负数，反复重连，设置为正数，重连测试后失败 -->
+    <property name="interval">30</property> <!-- 失败重连的间隔时间，默认30秒 -->
+    <property name="check">false</property> <!-- 启动日志是否检查连接成功，如果检查，不成功会失败 -->
   </appender>
   <!-- 这个就是自定义的一个logger -->
   <!-- 输出级别是info级别及以上的日志，不要怕，StreamOperateFile已经过滤，只输出info级别的日志 -->
@@ -61,7 +64,7 @@
   <root>
     <level>info</level>
     <appender-ref ref="console" />
-    <appender-ref ref="file" />
+    <appender-ref ref="logstash" />
   </root>
 
 </configuration>

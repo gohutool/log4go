@@ -258,6 +258,54 @@ Debugger finished with the exit code 0
 
 ![File log output snapshot](https://pic2.zhimg.com/v2-f9cd76d3d847a5bc2e81e9754f0b7389_r.jpg "File log output snapshot")
 
+### Socket Support
+
+- UDP Support
+```
+  <appender enabled="true" name="logstash">
+  <!-- enabled=false means this logger won't actually be created -->
+    <type>socket</type>
+    <pattern>[%D %T %m] [%L][%l] (%S) %M</pattern>
+    <property name="endpoint">192.168.56.1:12124</property> 
+    <!-- recommend UDP broadcast -->
+    <property name="protocol">udp</property> <!-- tcp or udp -->
+  </appender>
+
+  <root>
+    <level>info</level>
+    <appender-ref ref="console" />
+    <appender-ref ref="logstash" />
+  </root>
+```
+
+![UDP Socket log output snapshot](https://pic2.zhimg.com/80/v2-2a293537b2a2ca03494069b3bf5d15b5_720w.jpg "UDP Socket log output snapshot")
+
+- TCP Support
+```
+  <appender enabled="true" name="logstash">
+    <!-- enabled=false means this logger won't actually be created -->
+    <type>socket</type>
+    <pattern>[%D %T %m] [%L][%l] (%S) %M</pattern>
+    <property name="endpoint">192.168.56.1:12124</property>
+    <!-- recommend UDP broadcast -->
+    <property name="protocol">tcp</property> <!-- tcp or udp -->
+    <property name="retry">-1</property> 
+    <!-- 断线重连，设置为负数，反复重连，设置为正数，重连测试后失败 -->
+    <property name="interval">30</property> 
+    <!-- 失败重连的间隔时间，默认30秒 -->
+    <property name="check">false</property> 
+    <!-- 启动日志是否检查连接成功，如果检查，不成功会失败 -->
+  </appender>
+  
+  <root>
+    <level>info</level>
+    <appender-ref ref="console" />
+    <appender-ref ref="logstash" />
+  </root>
+```
+
+![TCP Socket log output snapshot](https://pic3.zhimg.com/80/v2-54dae594479fbf0523d2fe40406778ce_720w.jpg "TCP Socket log output snapshot")
+
 Acknowledgements:
 - pomack
   For providing awesome patches to bring log4go up to the latest Go spec

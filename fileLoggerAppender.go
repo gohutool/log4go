@@ -25,7 +25,6 @@ func init() {
 
 type FileLoggerAppender struct {
 	rec chan LogRecord
-	rot chan bool
 
 	pattern string
 	// The opened file
@@ -53,8 +52,10 @@ type FileLoggerAppender struct {
 }
 
 func (fla *FileLoggerAppender) Init(pattern string, property []AppenderProperty) error {
+	LoggerManager.debug("[Log4go]FileLoggerAppender init with ", property, pattern)
+
 	file := ""
-	format := "[%T %D %m] [%L][%l] (%S) %M"
+	dFormat := "[%T %D %m] [%L][%l] (%S) %M"
 	maxlines := 0
 	maxsize := 0
 	daily := false
@@ -63,12 +64,12 @@ func (fla *FileLoggerAppender) Init(pattern string, property []AppenderProperty)
 	if len(pattern) > 0 {
 		fla.pattern = pattern
 	} else {
-		fla.pattern = format
+		fla.pattern = dFormat
 	}
 
 	// Parse properties
 	for _, prop := range property {
-		switch prop.Name {
+		switch strings.ToLower(prop.Name) {
 		case "filename":
 			file = strings.Trim(prop.Value, " \r\n")
 		case "maxlines":
@@ -90,9 +91,7 @@ func (fla *FileLoggerAppender) Init(pattern string, property []AppenderProperty)
 	}
 
 	fla.rec = make(chan LogRecord, LogBufferLength)
-	fla.rot = make(chan bool)
 	fla.filename = file
-	fla.pattern = format
 	fla.rotate = rotate
 
 	fla.maxbackup = 999
@@ -122,11 +121,6 @@ func (fla *FileLoggerAppender) Start() error {
 
 		for {
 			select {
-			case <-fla.rot:
-				if err := fla.intRotate(); err != nil {
-					LoggerManager.error(fmt.Sprintf("FileLogWriter(%q): %s\n", fla.filename, err))
-					return
-				}
 			case rec, ok := <-fla.rec:
 				if !ok {
 					return
@@ -181,12 +175,6 @@ func (fla *FileLoggerAppender) Close() error {
 	fla.file.Sync()
 
 	return nil
-}
-
-// Rotate
-// Request that the logs rotate
-func (fla *FileLoggerAppender) Rotate() {
-	fla.rot <- true
 }
 
 // If this is called in a threaded context, it MUST be synchronized

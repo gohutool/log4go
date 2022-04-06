@@ -71,8 +71,12 @@ func TestLoggerExample(t *testing.T) {
 	log4go.LoggerManager.InitWithXML("./example.xml")
 	logger.Info("hello")
 	logger.Info("hello")
+	logger.Info("hello")
+	logger.Info("hello")
 	time.Sleep(1 * time.Second)
 	logger.Error("hello")
 
 	time.Sleep(3 * time.Second)
+
+	select {}
 }
