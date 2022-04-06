@@ -256,7 +256,7 @@ Debugger finished with the exit code 0
 ```
 - FileLoggerAppender output
 
-![File log output snapshot](misc\filelog-snapshot.png "File log output snapshot")
+![File log output snapshot](misc/filelog-snapshot.png "File log output snapshot")
 
 Acknowledgements:
 - pomack
