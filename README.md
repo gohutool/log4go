@@ -17,7 +17,7 @@ This project's idea is come from log4j, and support a log toolkit for golang.
 - Support configuration with XML
 - Support configuration with Json
 
-# Usage:
+# Usage
 - Add log4go with the following import
 ```
 import "github.com/gohutool/log4go"
