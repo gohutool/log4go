@@ -5,9 +5,19 @@ a logkit like as log4j with go language
 This project is come from an unmaintained fork, the branch can see http://log4go.googlecode.com
 
 - left only so it doesn't break imports.
-- some enhancement if to need 
+- some enhancement if to need
 
-Usage:
+# Feature
+This project's idea is come from log4j, and support a log toolkit for golang.
+
+- Support system output like stdout, stderr and so on
+- Support file system log output
+- Support network log output, in TCP/UDP, support reconnect while break down from log server
+- Support customized the LoggerAppender 
+- Support configuration with XML
+- Support configuration with Json
+
+# Usage:
 - Add log4go with the following import
 ```
 import "github.com/gohutool/log4go"
