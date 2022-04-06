@@ -222,11 +222,39 @@ import "github.com/gohutool/log4go"
 ```
 - log4go sample
 ```
-LoggerManager.InitWithXML("./examples/example.xml")
+
+import (
+	"github.com/gohutool/log4go"
+	"testing"
+	"time"
+)
+
 var logger = log4go.LoggerManager.GetLogger("com.hello")
-logger.Info("hello")
-logger.Info("hello")
+
+func TestLoggerExample(t *testing.T) {
+	log4go.LoggerManager.InitWithXML("./example.xml")
+	logger.Info("hello")
+	logger.Info("hello")
+	time.Sleep(1 * time.Second)
+	logger.Error("hello")
+
+	time.Sleep(3 * time.Second)
+}
 ```
+
+- sample output
+
+```
+=== RUN   TestLoggerExample
+[2022/04/06 15:17:59 CST 299] [INFO][com.hello] (github.com/gohutool/log4go/examples.TestLoggerExample:73) hello
+[2022/04/06 15:17:59 CST 299] [INFO][com.hello] (github.com/gohutool/log4go/examples.TestLoggerExample:72) hello
+[2022/04/06 15:18:00 CST 299] [EROR][com.hello] (github.com/gohutool/log4go/examples.TestLoggerExample:75) hello
+--- PASS: TestLoggerExample (4.00s)
+PASS
+
+Debugger finished with the exit code 0
+```
+
 
 Acknowledgements:
 - pomack
