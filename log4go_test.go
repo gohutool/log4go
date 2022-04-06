@@ -1,6 +1,8 @@
 package log4go
 
 import (
+	"encoding/json"
+	"encoding/xml"
 	"fmt"
 	"testing"
 )
@@ -19,6 +21,15 @@ import (
 
 func TestConfiguration(t *testing.T) {
 	xc := LoadXMLConfigurationProperties("./examples/example.xml")
+	b, _ := json.Marshal(xc)
+	fmt.Println(string(b))
+	fmt.Printf("%+v", xc)
+}
+
+func TestJsonConfiguration(t *testing.T) {
+	xc := LoadJsonConfigurationProperties("./examples/example.json")
+	b, _ := xml.Marshal(xc)
+	fmt.Println(string(b))
 	fmt.Printf("%+v", xc)
 }
 

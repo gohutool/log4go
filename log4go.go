@@ -252,3 +252,13 @@ func (lm *loggerManager) InitWithXML(xmlFile string) error {
 	lc := LoadXMLConfigurationProperties(xmlFile)
 	return lm.InitWithConfig(lc)
 }
+
+func (lm *loggerManager) InitWithJson(jsonFile string) error {
+	lc := LoadJsonConfigurationProperties(jsonFile)
+	return lm.InitWithConfig(lc)
+}
+
+func (lm *loggerManager) InitWithJsonConfig(jsonContent string) error {
+	lc := LoadJson(jsonContent)
+	return lm.InitWithConfig(lc)
+}

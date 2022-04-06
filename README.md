@@ -8,13 +8,14 @@ This project is come from an unmaintained fork, the branch can see http://log4go
 - some enhancement if to need 
 
 Usage:
-- Add the following import:
-import log4go with "github.com/gohutool/log4go"
-- log4go configuration sample
-
+- Add log4go with the following import
+```
+import "github.com/gohutool/log4go"
+```
+- Support Xml configuration
+```
 ./examples/example.xml
 
-```
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
   <appender enabled="true" name="console">
@@ -84,7 +85,130 @@ import log4go with "github.com/gohutool/log4go"
 
 </configuration>
 ```
-
+- Support Json configuration
+```
+{
+	"appenders": [
+		{
+			"enabled": "true",
+			"name": "console",
+			"type": "console",
+			"pattern": "[%D %T] [%L] (%S) %M",
+			"properties": null
+		},
+		{
+			"enabled": "true",
+			"name": "file",
+			"type": "file",
+			"pattern": "[%D %T] [%L] (%S) %M",
+			"properties": [
+				{
+					"name": "filename",
+					"value": "test.log"
+				},
+				{
+					"name": "rotate",
+					"value": "false"
+				},
+				{
+					"name": "maxsize",
+					"value": "0M"
+				},
+				{
+					"name": "maxlines",
+					"value": "0K"
+				},
+				{
+					"name": "daily",
+					"value": "true"
+				}
+			]
+		},
+		{
+			"enabled": "true",
+			"name": "testfile",
+			"type": "file",
+			"pattern": "[%D %T] [%L] (%S) %M",
+			"properties": [
+				{
+					"name": "filename",
+					"value": "trace.xml"
+				},
+				{
+					"name": "rotate",
+					"value": "false"
+				},
+				{
+					"name": "maxsize",
+					"value": "100M"
+				},
+				{
+					"name": "maxrecords",
+					"value": "6K"
+				},
+				{
+					"name": "daily",
+					"value": "false"
+				}
+			]
+		},
+		{
+			"enabled": "false",
+			"name": "logstash",
+			"type": "socket",
+			"pattern": "[%D %T] [%L] (%S) %M",
+			"properties": [
+				{
+					"name": "endpoint",
+					"value": "192.168.1.255:12124"
+				},
+				{
+					"name": "protocol",
+					"value": "udp"
+				}
+			]
+		}
+	],
+	"root": {
+		"level": "info",
+		"appender-refs": [
+			{
+				"appender": "testfile"
+			},
+			{
+				"appender": "logstash"
+			}
+		]
+	},
+	"loggers": [
+		{
+			"name": "Sample",
+			"level": "info",
+			"appender-refs": [
+				{
+					"appender": "file"
+				},
+				{
+					"appender": "console"
+				}
+			]
+		},
+		{
+			"name": "Demo",
+			"level": "info",
+			"appender-refs": [
+				{
+					"appender": "console"
+				},
+				{
+					"appender": "file"
+				}
+			]
+		}
+	]
+}
+```
+- log4go sample
 ```
 LoggerManager.InitWithXML("./examples/example.xml")
 var logger = log4go.LoggerManager.GetLogger("com.hello")
