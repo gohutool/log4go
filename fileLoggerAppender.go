@@ -32,9 +32,6 @@ type FileLoggerAppender struct {
 	filename string
 	file     *os.File
 
-	// The logging format
-	format string
-
 	// File header/trailer
 	header, trailer string
 
@@ -146,7 +143,7 @@ func (fla *FileLoggerAppender) Start() error {
 				}
 
 				// Perform the write
-				n, err := fmt.Fprint(fla.file, getDefaultPatternConvert().FormatLogRecord(fla.format, rec))
+				n, err := fmt.Fprint(fla.file, getDefaultPatternConvert().FormatLogRecord(fla.pattern, rec))
 				if err != nil {
 					LoggerManager.error(fmt.Sprintf("FileLogWriter(%q): %s\n", fla.filename, err))
 					return
