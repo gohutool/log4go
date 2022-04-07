@@ -1,6 +1,8 @@
 # log4go
 a logkit like as log4j with go language
 
+![license](https://img.shields.io/badge/license-Apache--2.0-green.svg)
+
 # Introduce
 This project is come from an unmaintained fork, the branch can see http://log4go.googlecode.com
 
