@@ -21,7 +21,7 @@ import (
 
 func init() {
 
-	//log4go.LoggerManager.SetDebug(true)
+	log4go.LoggerManager.SetDebug(true)
 	log4go.LoggerAppenderFactory.RegistryType("sample", &SampleLoggerAppender{})
 }
 
@@ -78,5 +78,5 @@ func TestLoggerExample(t *testing.T) {
 
 	time.Sleep(3 * time.Second)
 
-	select {}
+	//	select {}
 }
