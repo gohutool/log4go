@@ -72,12 +72,12 @@ func LoadXMLConfigurationProperties(filename string) LoggerConfiguration {
 	fd, err := os.Open(filename)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "LoadConfiguration: Error: Could not open %q for reading: %s\n", filename, err)
-		os.Exit(1)
+		panic(fmt.Sprintf("LoadConfiguration: Error: Could not open %q for reading: %s\n", filename, err))
 	}
 	contents, err := ioutil.ReadAll(fd)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "LoadConfiguration: Error: Could not read %q: %s\n", filename, err)
-		os.Exit(1)
+		panic(fmt.Sprintf("LoadConfiguration: Error: Could not read %q: %s\n", filename, err))
 	}
 
 	xc := new(LoggerConfiguration)
@@ -108,12 +108,12 @@ func LoadJsonConfigurationProperties(filename string) LoggerConfiguration {
 	fd, err := os.Open(filename)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "LoadConfiguration: Error: Could not open %q for reading: %s\n", filename, err)
-		os.Exit(1)
+		panic(fmt.Sprintf("LoadConfiguration: Error: Could not read %q: %s\n", filename, err))
 	}
 	contents, err := ioutil.ReadAll(fd)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "LoadConfiguration: Error: Could not read %q: %s\n", filename, err)
-		os.Exit(1)
+		panic(fmt.Sprintf("LoadConfiguration: Error: Could not read %q: %s\n", filename, err))
 	}
 
 	xc := new(LoggerConfiguration)
